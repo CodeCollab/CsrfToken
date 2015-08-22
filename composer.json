@@ -1,0 +1,24 @@
+{
+    "name": "codecollab/csrf-token",
+    "description": "CSRF token package of the CodeCollab project",
+    "version": "0.1.0",
+    "type": "library",
+    "keywords": ["codecollab", "csrf", "token", "security"],
+    "homepage": "https://github.com/CodeCollab/CsrfToken",
+    "license": "See the LICENSE file",
+    "authors": [
+        {
+            "name": "Pieter Hordijk",
+            "role": "Lead"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"CodeCollab\\CsrfToken\\": "src/"}
+    },
+    "require": {
+        "php": ">=7.0-dev"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "4.8.*"
+    }
+}
