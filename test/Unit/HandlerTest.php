@@ -106,7 +106,7 @@ class HandlerTest extends \PHPUnit_Framework_TestCase// implements Token
             public function generate(): string {}
         });
 
-        $this->assertFalse('csrfToken', (new Handler($storage, $generator))->isValid('not valid'));
+        $this->assertFalse((new Handler($storage, $generator))->isValid('not valid'));
     }
 
     /**
@@ -131,6 +131,6 @@ class HandlerTest extends \PHPUnit_Framework_TestCase// implements Token
             public function generate(): string {}
         });
 
-        $this->assertTrue('csrfToken', (new Handler($storage, $generator))->isValid('csrfToken'));
+        $this->assertTrue((new Handler($storage, $generator))->isValid('csrfToken'));
     }
 }
