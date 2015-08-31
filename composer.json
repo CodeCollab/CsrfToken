@@ -15,10 +15,11 @@
     "autoload": {
         "psr-4": {"CodeCollab\\CsrfToken\\": "src/"}
     },
+    "minimum-stability": "dev",
     "require": {
         "php": ">=7.0-dev"
     },
     "require-dev": {
-        "phpunit/phpunit": "4.8.*"
+        "phpunit/phpunit": "^5"
     }
 }
