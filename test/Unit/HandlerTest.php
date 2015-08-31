@@ -7,7 +7,7 @@ use CodeCollab\CsrfToken\Handler;
 class HandlerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers CodeCollab\CsrfToken\Token::__construct
+     * @covers CodeCollab\CsrfToken\Handler::__construct
      */
     public function testImplementsCorrectInterface()
     {
@@ -19,7 +19,7 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers CodeCollab\CsrfToken\Token::__construct
+     * @covers CodeCollab\CsrfToken\Handler::__construct
      * @covers CodeCollab\CsrfToken\Token::get
      */
     public function testGetAlreadyExists()
@@ -46,7 +46,7 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers CodeCollab\CsrfToken\Token::__construct
+     * @covers CodeCollab\CsrfToken\Handler::__construct
      * @covers CodeCollab\CsrfToken\Token::generate
      * @covers CodeCollab\CsrfToken\Token::get
      */
@@ -87,7 +87,7 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers CodeCollab\CsrfToken\Token::__construct
+     * @covers CodeCollab\CsrfToken\Handler::__construct
      * @covers CodeCollab\CsrfToken\Token::isValid
      */
     public function testIsValidNotValid()
@@ -114,7 +114,7 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers CodeCollab\CsrfToken\Token::__construct
+     * @covers CodeCollab\CsrfToken\Handler::__construct
      * @covers CodeCollab\CsrfToken\Token::isValid
      */
     public function testIsValidValid()
