@@ -1,3 +1,5 @@
+sudo: false
+
 language: php
 
 php:
@@ -9,4 +11,4 @@ before_script:
   - travis_retry composer install --no-interaction
 
 script:
-  - vendor/bin/phpunit
+  - phpdbg -qrr vendor/bin/phpunit --coverage-text
