@@ -7,7 +7,6 @@ use CodeCollab\CsrfToken\Generator\RandomBytes32;
 class RandomBytes32Test extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers CodeCollab\CsrfToken\Generator\RandomBytes32::__construct
      */
     public function testImplementsCorrectInterface()
     {
@@ -18,7 +17,6 @@ class RandomBytes32Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers CodeCollab\CsrfToken\Generator\RandomBytes32::__construct
      * @covers CodeCollab\CsrfToken\Generator\RandomBytes32::generate
      */
     public function testGenerateCorrect()
@@ -30,7 +28,6 @@ class RandomBytes32Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers CodeCollab\CsrfToken\Generator\RandomBytes32::__construct
      * @covers CodeCollab\CsrfToken\Generator\RandomBytes32::generate
      */
     public function testGenerateReturnsToken()
@@ -58,7 +55,6 @@ class RandomBytes32Test extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers CodeCollab\CsrfToken\Generator\RandomBytes32::__construct
      * @covers CodeCollab\CsrfToken\Generator\RandomBytes32::generate
      */
     public function testGenerateNoSufficientStrength()
