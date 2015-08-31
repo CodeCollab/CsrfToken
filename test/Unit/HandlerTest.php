@@ -2,28 +2,18 @@
 
 namespace CodeCollabTest\Unit\CsrfToken;
 
-use CodeCollab\CsrfToken\Storage\Storage;
-use CodeCollab\CsrfToken\Generator\Generator;
 use CodeCollab\CsrfToken\Handler;
 
-class HandlerTest extends \PHPUnit_Framework_TestCase// implements Token
+class HandlerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @covers CodeCollab\CsrfToken\Token::__construct
      */
     public function testImplementsCorrectInterface()
     {
-        $storage = (new class implements Storage {
-            public function exists(string $key): bool {}
+        $storage = $this->getMock('CodeCollab\CsrfToken\Storage\Storage');
 
-            public function get(string $key): string {}
-
-            public function set(string $key, string $token) {}
-        });
-
-        $generator = (new class implements Generator {
-            public function generate(): string {}
-        });
+        $generator = $this->getMock('CodeCollab\CsrfToken\Generator\Generator');
 
         $this->assertInstanceOf('CodeCollab\CsrfToken\Token', new Handler($storage, $generator));
     }
@@ -34,23 +24,25 @@ class HandlerTest extends \PHPUnit_Framework_TestCase// implements Token
      */
     public function testGetAlreadyExists()
     {
-        $storage = (new class implements Storage {
-            public function exists(string $key): bool {
-                return true;
-            }
+        $storage = $this->getMock('CodeCollab\CsrfToken\Storage\Storage');
 
-            public function get(string $key): string {
-                return $key;
-            }
+        $storage
+            ->expects($this->once())
+            ->method('exists')
+            ->with($this->equalTo('csrfToken'))
+            ->willReturn(true)
+        ;
 
-            public function set(string $key, string $token) {}
-        });
+        $storage
+            ->expects($this->once())
+            ->method('get')
+            ->with($this->equalTo('csrfToken'))
+            ->willReturn('TheToken')
+        ;
 
-        $generator = (new class implements Generator {
-            public function generate(): string {}
-        });
+        $generator = $this->getMock('CodeCollab\CsrfToken\Generator\Generator');
 
-        $this->assertSame('csrfToken', (new Handler($storage, $generator))->get());
+        $this->assertSame('TheToken', (new Handler($storage, $generator))->get());
     }
 
     /**
@@ -60,28 +52,38 @@ class HandlerTest extends \PHPUnit_Framework_TestCase// implements Token
      */
     public function testGetBeingGenerated()
     {
-        $storage = (new class implements Storage {
-            public function exists(string $key): bool {
-                return false;
-            }
+        $storage = $this->getMock('CodeCollab\CsrfToken\Storage\Storage');
 
-            public function get(string $key): string {
-                return $key;
-            }
+        $storage
+            ->expects($this->once())
+            ->method('exists')
+            ->with($this->equalTo('csrfToken'))
+            ->willReturn(false)
+        ;
 
-            public function set(string $key, string $token) {
-                \PHPUnit_Framework_Assert::assertSame('csrfToken', $key);
-                \PHPUnit_Framework_Assert::assertSame('generatedtoken', $token);
-            }
-        });
+        $storage
+            ->expects($this->once())
+            ->method('set')
+            ->with($this->equalTo('csrfToken'), $this->equalTo('generatedtoken'))
+            ->willReturn('TheToken')
+        ;
 
-        $generator = (new class implements Generator {
-            public function generate(): string {
-                return 'generatedtoken';
-            }
-        });
+        $storage
+            ->expects($this->once())
+            ->method('get')
+            ->with($this->equalTo('csrfToken'))
+            ->willReturn('TheToken')
+        ;
 
-        $this->assertSame('csrfToken', (new Handler($storage, $generator))->get());
+        $generator = $this->getMock('CodeCollab\CsrfToken\Generator\Generator');
+
+        $generator
+            ->expects($this->once())
+            ->method('generate')
+            ->willReturn('generatedtoken')
+        ;
+
+        $this->assertSame('TheToken', (new Handler($storage, $generator))->get());
     }
 
     /**
@@ -90,21 +92,23 @@ class HandlerTest extends \PHPUnit_Framework_TestCase// implements Token
      */
     public function testIsValidNotValid()
     {
-        $storage = (new class implements Storage {
-            public function exists(string $key): bool {
-                return true;
-            }
+        $storage = $this->getMock('CodeCollab\CsrfToken\Storage\Storage');
 
-            public function get(string $key): string {
-                return $key;
-            }
+        $storage
+            ->expects($this->once())
+            ->method('exists')
+            ->with($this->equalTo('csrfToken'))
+            ->willReturn(true)
+        ;
 
-            public function set(string $key, string $token) {}
-        });
+        $storage
+            ->expects($this->once())
+            ->method('get')
+            ->with($this->equalTo('csrfToken'))
+            ->willReturn('TheToken')
+        ;
 
-        $generator = (new class implements Generator {
-            public function generate(): string {}
-        });
+        $generator = $this->getMock('CodeCollab\CsrfToken\Generator\Generator');
 
         $this->assertFalse((new Handler($storage, $generator))->isValid('not valid'));
     }
@@ -115,22 +119,24 @@ class HandlerTest extends \PHPUnit_Framework_TestCase// implements Token
      */
     public function testIsValidValid()
     {
-        $storage = (new class implements Storage {
-            public function exists(string $key): bool {
-                return true;
-            }
+        $storage = $this->getMock('CodeCollab\CsrfToken\Storage\Storage');
 
-            public function get(string $key): string {
-                return $key;
-            }
+        $storage
+            ->expects($this->once())
+            ->method('exists')
+            ->with($this->equalTo('csrfToken'))
+            ->willReturn(true)
+        ;
 
-            public function set(string $key, string $token) {}
-        });
+        $storage
+            ->expects($this->once())
+            ->method('get')
+            ->with($this->equalTo('csrfToken'))
+            ->willReturn('TheToken')
+        ;
 
-        $generator = (new class implements Generator {
-            public function generate(): string {}
-        });
+        $generator = $this->getMock('CodeCollab\CsrfToken\Generator\Generator');
 
-        $this->assertTrue((new Handler($storage, $generator))->isValid('csrfToken'));
+        $this->assertTrue((new Handler($storage, $generator))->isValid('TheToken'));
     }
 }
