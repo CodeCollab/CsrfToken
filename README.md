@@ -31,9 +31,11 @@ This library securely generates and validates CSRF tokens. To use this libray si
 
     var_dump($csrfToken->isValid($theToken)); // true
     var_dump($csrfToken->isValid('invalid token')); // false
+````
 
 To generate a new token (and invalidate the old token) simply call `$csrfToken->generate()`.
 
+````php
     <?php
 
     $csrfToken = new \CodeCollab\CsrfToken\Token\Handler($storage, $generator);
@@ -46,11 +48,13 @@ To generate a new token (and invalidate the old token) simply call `$csrfToken->
     $csrfToken->generate();
 
     var_dump($csrfToken->isValid($theToken)); // false
+````
 
 ### Storage
 
 This library only provides an interface for storage objects so you can use any storage you prefer. The storage must have a way to persist the token between requests (i.e. session). An example native session storage implementation may look like:
 
+````php
     <?php declare(strict_types=1);
 
     use CodeCollab\CsrfToken\Storage\Storage;
@@ -72,6 +76,7 @@ This library only provides an interface for storage objects so you can use any s
             $_SESSION[$key] = $token;
         }
     }
+````
 
 All storage implementations must implement `CodeCollab\CsrfToken\Storage\Storage`.
 
