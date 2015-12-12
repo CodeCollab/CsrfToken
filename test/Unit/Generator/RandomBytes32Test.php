@@ -44,8 +44,6 @@ class RandomBytes32Test extends \PHPUnit_Framework_TestCase
             return 'generatedtoken' . $length;
         });
 
-        $this->setExpectedException('CodeCollabLib\CsrfToken\Generator\InsufficientStrengthException');
-
         $this->assertSame(
             'generatedtoken32',
             (new RandomBytes32($this->getMock('CodeCollabLib\CsrfToken\Storage\Storage')))->generate()
@@ -57,7 +55,7 @@ class RandomBytes32Test extends \PHPUnit_Framework_TestCase
     /**
      * @covers CodeCollab\CsrfToken\Generator\RandomBytes32::generate
      */
-    public function testGenerateNoSufficientStrength()
+    public function testGenerateNoAppropriateSourceOfRandomness()
     {
         if (!function_exists('uopz_backup')) {
             $this->markTestSkipped('uopz extension is not installed.');
@@ -68,10 +66,70 @@ class RandomBytes32Test extends \PHPUnit_Framework_TestCase
         uopz_backup('random_bytes');
 
         uopz_function('random_bytes', function(){
-            return false;
+            throw new \Exception('badsource', 1);
         });
 
-        $this->setExpectedException('CodeCollabLib\CsrfToken\Generator\InsufficientStrengthException');
+        $this->setExpectedException(
+            'CodeCollabLib\CsrfToken\Generator\InsufficientStrengthException',
+            'Could not generate a sufficientely strong token.',
+            1
+        );
+
+        (new RandomBytes32($this->getMock('CodeCollabLib\CsrfToken\Storage\Storage')))->generate();
+
+        uopz_restore('random_bytes');
+    }
+
+    /**
+     * @covers CodeCollab\CsrfToken\Generator\RandomBytes32::generate
+     */
+    public function testGenerateInvalidParameters()
+    {
+        if (!function_exists('uopz_backup')) {
+            $this->markTestSkipped('uopz extension is not installed.');
+
+            return;
+        }
+
+        uopz_backup('random_bytes');
+
+        uopz_function('random_bytes', function(){
+            throw new \TypeError('invalidparams', 2);
+        });
+
+        $this->setExpectedException(
+            'CodeCollabLib\CsrfToken\Generator\InsufficientStrengthException',
+            'Could not generate a sufficientely strong token.',
+            2
+        );
+
+        (new RandomBytes32($this->getMock('CodeCollabLib\CsrfToken\Storage\Storage')))->generate();
+
+        uopz_restore('random_bytes');
+    }
+
+    /**
+     * @covers CodeCollab\CsrfToken\Generator\RandomBytes32::generate
+     */
+    public function testGenerateInvalidLengthOfBytes()
+    {
+        if (!function_exists('uopz_backup')) {
+            $this->markTestSkipped('uopz extension is not installed.');
+
+            return;
+        }
+
+        uopz_backup('random_bytes');
+
+        uopz_function('random_bytes', function(){
+            throw new \Error('invalidlength', 3);
+        });
+
+        $this->setExpectedException(
+            'CodeCollabLib\CsrfToken\Generator\InsufficientStrengthException',
+            'Could not generate a sufficientely strong token.',
+            3
+        );
 
         (new RandomBytes32($this->getMock('CodeCollabLib\CsrfToken\Storage\Storage')))->generate();
 
