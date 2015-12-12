@@ -22,6 +22,7 @@ Include the library in your project using composer:
 
 This library securely generates and validates CSRF tokens. To use this libray simply create a new `\CodeCollab\CsrfToken\Token` instance. A functioning concrete implementation is added as `\CodeCollab\CsrfToken\Token\Handler`:
 
+````php
     <?php
 
     $csrfToken = new \CodeCollab\CsrfToken\Token\Handler($storage, $generator);
