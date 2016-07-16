@@ -3,6 +3,9 @@
 namespace CodeCollabTest\Unit\CsrfToken\Generator;
 
 use CodeCollab\CsrfToken\Generator\RandomBytes32;
+use CodeCollab\CsrfToken\Generator\Generator;
+use CodeCollabLib\CsrfToken\Storage\Storage;
+use CodeCollab\CsrfToken\Generator\InsufficientStrengthException;
 
 class RandomBytes32Test extends \PHPUnit_Framework_TestCase
 {
@@ -10,10 +13,7 @@ class RandomBytes32Test extends \PHPUnit_Framework_TestCase
      */
     public function testImplementsCorrectInterface()
     {
-        $this->assertInstanceOf(
-            'CodeCollab\CsrfToken\Generator\Generator',
-            new RandomBytes32($this->getMock('CodeCollabLib\CsrfToken\Storage\Storage'))
-        );
+        $this->assertInstanceOf(Generator::class, new RandomBytes32($this->createMock(Storage::class)));
     }
 
     /**
@@ -21,10 +21,7 @@ class RandomBytes32Test extends \PHPUnit_Framework_TestCase
      */
     public function testGenerateCorrect()
     {
-        $this->assertSame(
-            32,
-            strlen((new RandomBytes32($this->getMock('CodeCollabLib\CsrfToken\Storage\Storage')))->generate())
-        );
+        $this->assertSame(32, strlen((new RandomBytes32($this->createMock(Storage::class)))->generate()));
     }
 
     /**
@@ -44,10 +41,7 @@ class RandomBytes32Test extends \PHPUnit_Framework_TestCase
             return 'generatedtoken' . $length;
         });
 
-        $this->assertSame(
-            'generatedtoken32',
-            (new RandomBytes32($this->getMock('CodeCollabLib\CsrfToken\Storage\Storage')))->generate()
-        );
+        $this->assertSame('generatedtoken32', (new RandomBytes32($this->createMock(Storage::class)))->generate());
 
         uopz_restore('random_bytes');
     }
@@ -66,72 +60,14 @@ class RandomBytes32Test extends \PHPUnit_Framework_TestCase
         uopz_backup('random_bytes');
 
         uopz_function('random_bytes', function(){
-            throw new \Exception('badsource', 1);
+            throw new \Exception ('Could not gather sufficient random data', 1);
         });
 
-        $this->setExpectedException(
-            'CodeCollabLib\CsrfToken\Generator\InsufficientStrengthException',
-            'Could not generate a sufficientely strong token.',
-            1
-        );
+        $this->expectException(InsufficientStrengthException::class);
+        $this->expectExceptionMessage('Could not gather sufficient random data');
+        //$this->expectExceptionCode(1);
 
-        (new RandomBytes32($this->getMock('CodeCollabLib\CsrfToken\Storage\Storage')))->generate();
-
-        uopz_restore('random_bytes');
-    }
-
-    /**
-     * @covers CodeCollab\CsrfToken\Generator\RandomBytes32::generate
-     */
-    public function testGenerateInvalidParameters()
-    {
-        if (!function_exists('uopz_backup')) {
-            $this->markTestSkipped('uopz extension is not installed.');
-
-            return;
-        }
-
-        uopz_backup('random_bytes');
-
-        uopz_function('random_bytes', function(){
-            throw new \TypeError('invalidparams', 2);
-        });
-
-        $this->setExpectedException(
-            'CodeCollabLib\CsrfToken\Generator\InsufficientStrengthException',
-            'Could not generate a sufficientely strong token.',
-            2
-        );
-
-        (new RandomBytes32($this->getMock('CodeCollabLib\CsrfToken\Storage\Storage')))->generate();
-
-        uopz_restore('random_bytes');
-    }
-
-    /**
-     * @covers CodeCollab\CsrfToken\Generator\RandomBytes32::generate
-     */
-    public function testGenerateInvalidLengthOfBytes()
-    {
-        if (!function_exists('uopz_backup')) {
-            $this->markTestSkipped('uopz extension is not installed.');
-
-            return;
-        }
-
-        uopz_backup('random_bytes');
-
-        uopz_function('random_bytes', function(){
-            throw new \Error('invalidlength', 3);
-        });
-
-        $this->setExpectedException(
-            'CodeCollabLib\CsrfToken\Generator\InsufficientStrengthException',
-            'Could not generate a sufficientely strong token.',
-            3
-        );
-
-        (new RandomBytes32($this->getMock('CodeCollabLib\CsrfToken\Storage\Storage')))->generate();
+        (new RandomBytes32($this->createMock(Storage::class)))->generate();
 
         uopz_restore('random_bytes');
     }

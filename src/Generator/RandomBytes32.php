@@ -27,23 +27,17 @@ class RandomBytes32 implements Generator
     /**
      * Generates a token
      *
-     * @todo Check whether internals can actually make a sane decision on handling errors
-     *
      * @return string The generated token
      *
-     * @throws \CodeCollabLib\CsrfToken\Generator\InsufficientStrengthException When a token with sufficient strength
-     *                                                                          could not be generated
+     * @throws \CodeCollab\CsrfToken\Generator\InsufficientStrengthException When a token with sufficient strength
+     *                                                                       could not be generated
      */
     public function generate(): string
     {
         try {
             $token = random_bytes(32);
-        } catch(\Exception $e) {
-            throw new InsufficientStrengthException('Could not generate a sufficientely strong token.', $e->getCode(), $e);
-        } catch(\TypeError $e) {
-            throw new InsufficientStrengthException('Could not generate a sufficientely strong token.', $e->getCode(), $e);
-        } catch(\Error $e) {
-            throw new InsufficientStrengthException('Could not generate a sufficientely strong token.', $e->getCode(), $e);
+        } catch(\Throwable $e) {
+            throw new InsufficientStrengthException($e->getMessage(), $e->getCode(), $e);
         }
 
         return $token;
