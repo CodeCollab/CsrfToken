@@ -4,7 +4,7 @@ namespace CodeCollabTest\Unit\CsrfToken\Generator;
 
 use CodeCollab\CsrfToken\Generator\RandomBytes32;
 use CodeCollab\CsrfToken\Generator\Generator;
-use CodeCollabLib\CsrfToken\Storage\Storage;
+use CodeCollab\CsrfToken\Storage\Storage;
 use CodeCollab\CsrfToken\Generator\InsufficientStrengthException;
 
 class RandomBytes32Test extends \PHPUnit_Framework_TestCase
