@@ -25,7 +25,7 @@
         <whitelist>
             <directory suffix=".php">src/</directory>
             <exclude>
-                <file>src/InsufficientStrengthException.php</file>
+                <file>src/Generator/InsufficientStrengthException.php</file>
             </exclude>
         </whitelist>
     </filter>
