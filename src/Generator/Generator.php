@@ -31,8 +31,8 @@ interface Generator
      *
      * @return string The generated token
      *
-     * @throws \CodeCollabLib\CsrfToken\InsufficientStrengthException When a token with sufficient strength
-     *                                                                could not be generated
+     * @throws \CodeCollab\CsrfToken\Generator\InsufficientStrengthException When a token with sufficient strength
+     *                                                                       could not be generated
      */
     public function generate(): string;
 }
