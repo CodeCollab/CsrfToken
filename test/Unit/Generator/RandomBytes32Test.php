@@ -65,7 +65,6 @@ class RandomBytes32Test extends \PHPUnit_Framework_TestCase
 
         $this->expectException(InsufficientStrengthException::class);
         $this->expectExceptionMessage('Could not gather sufficient random data');
-        //$this->expectExceptionCode(1);
 
         (new RandomBytes32($this->createMock(Storage::class)))->generate();
 
