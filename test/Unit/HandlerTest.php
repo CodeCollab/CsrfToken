@@ -3,6 +3,9 @@
 namespace CodeCollabTest\Unit\CsrfToken;
 
 use CodeCollab\CsrfToken\Handler;
+use CodeCollab\CsrfToken\Storage\Storage;
+use CodeCollab\CsrfToken\Generator\Generator;
+use CodeCollab\CsrfToken\Token;
 
 class HandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -11,11 +14,10 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testImplementsCorrectInterface()
     {
-        $storage = $this->getMock('CodeCollab\CsrfToken\Storage\Storage');
+        $storage   = $this->createMock(Storage::class);
+        $generator = $this->createMock(Generator::class);
 
-        $generator = $this->getMock('CodeCollab\CsrfToken\Generator\Generator');
-
-        $this->assertInstanceOf('CodeCollab\CsrfToken\Token', new Handler($storage, $generator));
+        $this->assertInstanceOf(Token::class, new Handler($storage, $generator));
     }
 
     /**
@@ -24,7 +26,7 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAlreadyExists()
     {
-        $storage = $this->getMock('CodeCollab\CsrfToken\Storage\Storage');
+        $storage = $this->createMock(Storage::class);
 
         $storage
             ->expects($this->once())
@@ -40,7 +42,7 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
             ->willReturn('TheToken')
         ;
 
-        $generator = $this->getMock('CodeCollab\CsrfToken\Generator\Generator');
+        $generator = $this->createMock(Generator::class);
 
         $this->assertSame('TheToken', (new Handler($storage, $generator))->get());
     }
@@ -52,7 +54,7 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetBeingGenerated()
     {
-        $storage = $this->getMock('CodeCollab\CsrfToken\Storage\Storage');
+        $storage = $this->createMock(Storage::class);
 
         $storage
             ->expects($this->once())
@@ -75,7 +77,7 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
             ->willReturn('TheToken')
         ;
 
-        $generator = $this->getMock('CodeCollab\CsrfToken\Generator\Generator');
+        $generator = $this->createMock(Generator::class);
 
         $generator
             ->expects($this->once())
@@ -92,7 +94,7 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsValidNotValid()
     {
-        $storage = $this->getMock('CodeCollab\CsrfToken\Storage\Storage');
+        $storage = $this->createMock(Storage::class);
 
         $storage
             ->expects($this->once())
@@ -108,7 +110,7 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
             ->willReturn('TheToken')
         ;
 
-        $generator = $this->getMock('CodeCollab\CsrfToken\Generator\Generator');
+        $generator = $this->createMock(Generator::class);
 
         $this->assertFalse((new Handler($storage, $generator))->isValid('not valid'));
     }
@@ -119,7 +121,7 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsValidValid()
     {
-        $storage = $this->getMock('CodeCollab\CsrfToken\Storage\Storage');
+        $storage = $this->createMock(Storage::class);
 
         $storage
             ->expects($this->once())
@@ -135,7 +137,7 @@ class HandlerTest extends \PHPUnit_Framework_TestCase
             ->willReturn('TheToken')
         ;
 
-        $generator = $this->getMock('CodeCollab\CsrfToken\Generator\Generator');
+        $generator = $this->createMock(Generator::class);
 
         $this->assertTrue((new Handler($storage, $generator))->isValid('TheToken'));
     }
