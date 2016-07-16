@@ -1,7 +1,7 @@
 {
     "name": "codecollab/csrf-token",
     "description": "CSRF token package of the CodeCollab project",
-    "version": "1.0.0",
+    "version": "2.0.0",
     "type": "library",
     "keywords": ["codecollab", "csrf", "token", "security"],
     "homepage": "https://github.com/CodeCollab/CsrfToken",

@@ -8,7 +8,7 @@
  * @author     Pieter Hordijk <info@pieterhordijk.com>
  * @copyright  Copyright (c) 2015 Pieter Hordijk <https://github.com/PeeHaa>
  * @license    See the LICENSE file
- * @version    1.0.0
+ * @version    2.0.0
  */
 namespace CodeCollabTest;
 
