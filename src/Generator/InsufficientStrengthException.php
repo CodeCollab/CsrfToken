@@ -12,7 +12,7 @@
  * @license    See the LICENSE file
  * @version    1.0.0
  */
-namespace CodeCollab\Security\Generator;
+namespace CodeCollab\CsrfToken\Generator;
 
 /**
  * Exception which gets thrown when an insufficient strong key is being generated
