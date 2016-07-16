@@ -14,7 +14,7 @@ Include the library in your project using composer:
 
     {
         "require-dev": {
-            "codecollab/csrf-token": "1.0.*"
+            "codecollab/csrf-token": "^1"
         }
     }
 
